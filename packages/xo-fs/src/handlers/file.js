@@ -1,16 +1,16 @@
 import fs from 'fs-promise'
-import startsWith from 'lodash/startsWith'
+import {
+  noop,
+  startsWith
+} from 'lodash'
 import {
   dirname,
   resolve
 } from 'path'
 
 import RemoteHandlerAbstract from './abstract'
-import {
-  noop
-} from '../utils'
 
-export default class LocalHandler extends RemoteHandlerAbstract {
+export default class FileHandler extends RemoteHandlerAbstract {
   get type () {
     return 'file'
   }

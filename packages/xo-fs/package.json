@@ -1,0 +1,86 @@
+{
+  "name": "xo-fs",
+  "version": "0.0.0",
+  "license": "ISC",
+  "description": "",
+  "keywords": [],
+  "homepage": "https://github.com/vatesfr/xen-orchestra",
+  "bugs": "https://github.com/vatesfr/xo-web/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vatesfr/xen-orchestra.git"
+  },
+  "author": {
+    "name": "Julien Fontanet",
+    "email": "julien.fontanet@vates.fr"
+  },
+  "preferGlobal": false,
+  "main": "dist/",
+  "bin": {},
+  "files": [
+    "dist/"
+  ],
+  "engines": {
+    "node": ">=4"
+  },
+  "dependencies": {
+    "babel-runtime": "^6.20.0",
+    "event-to-promise": "^0.7.0",
+    "promise-toolbox": "^0.8.0",
+    "through2": "^2.0.3",
+    "xo-remote-parser": "^0.3.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-eslint": "^7.1.1",
+    "babel-plugin-lodash": "^3.2.11",
+    "babel-plugin-transform-runtime": "^6.15.0",
+    "babel-preset-env": "^1.1.8",
+    "babel-preset-stage-3": "^6.17.0",
+    "cross-env": "^3.1.4",
+    "dependency-check": "^2.7.0",
+    "index-modules": "^0.2.2",
+    "jest": "^18.1.0",
+    "rimraf": "^2.5.4",
+    "standard": "^8.6.0"
+  },
+  "scripts": {
+    "build": "cross-env NODE_ENV=production babel --source-maps --out-dir=dist/ src/",
+    "commit-msg": "npm test",
+    "dev": "cross-env NODE_ENV=development babel --watch --source-maps --out-dir=dist/ src/",
+    "dev-test": "jest --bail --watch",
+    "posttest": "standard && dependency-check ./package.json",
+    "prebuild": "rimraf dist/ && index-modules --auto src/",
+    "predev": "npm run prebuild",
+    "prepublish": "npm run build",
+    "test": "jest"
+  },
+  "babel": {
+    "plugins": [
+      "lodash"
+    ],
+    "presets": [
+      [
+        "env",
+        {
+          "targets": {
+            "node": 4
+          }
+        }
+      ],
+      "stage-3"
+    ]
+  },
+  "jest": {
+    "testPathDirs": [
+      "<rootDir>/src"
+    ],
+    "testRegex": "\\.spec\\.js$"
+  },
+  "standard": {
+    "ignore": [
+      "dist"
+    ],
+    "parser": "babel-eslint"
+  }
+}

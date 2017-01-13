@@ -1,10 +1,8 @@
 import Smb2 from '@marsaud/smb2-promise'
+import { finally as pFinally } from 'promise-toolbox'
+import { noop } from 'lodash'
 
 import RemoteHandlerAbstract from './abstract'
-import {
-  noop,
-  pFinally
-} from '../utils'
 
 // Normalize the error code for file not found.
 const normalizeError = error => {
@@ -94,7 +92,7 @@ export default class SmbHandler extends RemoteHandlerAbstract {
       await client.ensureDir(dir)
     }
 
-    return client.writeFile(path, data, options)::pFinally(() => { client.close() })
+    return pFinally.call(client.writeFile(path, data, options), () => { client.close() })
   }
 
   async _readFile (file, options = {}) {
@@ -102,7 +100,7 @@ export default class SmbHandler extends RemoteHandlerAbstract {
     let content
 
     try {
-      content = await client.readFile(this._getFilePath(file), options)::pFinally(() => { client.close() })
+      content = await pFinally.call(client.readFile(this._getFilePath(file), options), () => { client.close() })
     } catch (error) {
       throw normalizeError(error)
     }
@@ -114,7 +112,7 @@ export default class SmbHandler extends RemoteHandlerAbstract {
     const client = this._getClient(this._remote)
 
     try {
-      await client.rename(this._getFilePath(oldPath), this._getFilePath(newPath))::pFinally(() => { client.close() })
+      await pFinally.call(client.rename(this._getFilePath(oldPath), this._getFilePath(newPath)), () => { client.close() })
     } catch (error) {
       throw normalizeError(error)
     }
@@ -125,7 +123,7 @@ export default class SmbHandler extends RemoteHandlerAbstract {
     let list
 
     try {
-      list = await client.readdir(this._getFilePath(dir))::pFinally(() => { client.close() })
+      list = await pFinally.call(client.readdir(this._getFilePath(dir)), () => { client.close() })
     } catch (error) {
       throw normalizeError(error)
     }
@@ -170,7 +168,7 @@ export default class SmbHandler extends RemoteHandlerAbstract {
     const client = this._getClient(this._remote)
 
     try {
-      await client.unlink(this._getFilePath(file))::pFinally(() => { client.close() })
+      await pFinally.call(client.unlink(this._getFilePath(file)), () => { client.close() })
     } catch (error) {
       throw normalizeError(error)
     }
@@ -181,7 +179,7 @@ export default class SmbHandler extends RemoteHandlerAbstract {
     let size
 
     try {
-      size = await client.getSize(this._getFilePath(file))::pFinally(() => { client.close() })
+      size = await pFinally.call(client.getSize(this._getFilePath(file)), () => { client.close() })
     } catch (error) {
       throw normalizeError(error)
     }

@@ -1,31 +1,16 @@
 import eventToPromise from 'event-to-promise'
 import through2 from 'through2'
-
-import {
-  parse
-} from 'xo-remote-parser'
+import { catchPlus as pCatch } from 'promise-toolbox'
+import { noop } from 'lodash'
 
 import {
   addChecksumToReadStream,
   getPseudoRandomBytes,
-  noop,
-  pCatch,
   streamToBuffer,
   validChecksumOfReadStream
 } from '../utils'
 
 export default class RemoteHandlerAbstract {
-  constructor (remote) {
-    this._remote = {...remote, ...parse(remote.url)}
-    if (this._remote.type !== this.type) {
-      throw new Error('Incorrect remote type')
-    }
-  }
-
-  get type () {
-    throw new Error('Not implemented')
-  }
-
   /**
    * Asks the handler to sync the state of the effective remote with its' metadata
    */
@@ -206,7 +191,7 @@ export default class RemoteHandlerAbstract {
     checksum = false
   } = {}) {
     if (checksum) {
-      this._unlink(`${file}.checksum`)::pCatch(noop)
+      pCatch.call(this._unlink(`${file}.checksum`), noop)
     }
 
     return this._unlink(file)

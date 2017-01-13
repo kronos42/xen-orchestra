@@ -1,12 +1,10 @@
 import execa from 'execa'
 import fs from 'fs-promise'
+import { forEach } from 'lodash'
 
-import LocalHandler from './local'
-import {
-  forEach
-} from '../utils'
+import FileHandler from './file'
 
-export default class NfsHandler extends LocalHandler {
+export default class NfsHandler extends FileHandler {
   get type () {
     return 'nfs'
   }
