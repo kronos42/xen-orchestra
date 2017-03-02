@@ -4,7 +4,7 @@
   "license": "ISC",
   "description": "",
   "keywords": [],
-  "homepage": "https://github.com/vatesfr/xen-orchestra",
+  "homepage": "https://github.com/vatesfr/xen-orchestra/tree/master/packages/xo-fs",
   "bugs": "https://github.com/vatesfr/xo-web/issues",
   "repository": {
     "type": "git",
