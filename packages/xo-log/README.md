@@ -55,6 +55,57 @@ configure([
 ])
 ```
 
+### Transports
+
+#### Console
+
+```js
+configure(transports.console())
+```
+
+#### Email
+
+Optional dependency:
+
+```
+> yarn add nodemailer
+```
+
+Configuration:
+
+```js
+configure(transports.email({
+  service: 'gmail',
+  auth: {
+    user: 'jane.smith@gmail.com',
+    pass: 'H&NbECcpXF|pyXe#%ZEb'
+  },
+  from: 'jane.smith@gmail.com',
+  to: [
+    'jane.smith@gmail.com',
+    'sam.doe@yahoo.com'
+  ]
+}))
+```
+
+#### Syslog
+
+Optional dependency:
+
+```
+> yarn add split-host syslog-client
+```
+
+Configuration:
+
+```js
+// By default, log to udp://localhost:514
+configure(transports.syslog())
+
+// But TCP, a different host, or a different port can be used
+configure(transports.syslog('tcp://syslog.company.lan'))
+```
+
 ## Development
 
 ```
