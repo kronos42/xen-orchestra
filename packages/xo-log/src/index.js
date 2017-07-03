@@ -106,18 +106,19 @@ const { prototype } = Logger
 
 prototype.wrap = function (message, fn) {
   const logger = this
+  const warnAndRethrow = error => {
+    logger.warn(message, { error })
+    throw error
+  }
   return function () {
     try {
       const result = fn.apply(this, arguments)
       const then = result != null && result.then
       return typeof then === 'function'
-        ? then.call(result, error => {
-          logger.warn(message, { error })
-          throw error
-        })
+        ? then.call(result, warnAndRethrow)
         : result
     } catch (error) {
-      logger.warn(message, { error })
+      warnAndRethrow(error)
     }
   }
 }
