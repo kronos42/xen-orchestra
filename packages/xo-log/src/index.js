@@ -154,6 +154,6 @@ export const catchGlobalErrors = logger => {
 
   // catch uncaught exceptions
   process.on('uncaughtException', error => {
-    logger.fatal('uncaught exception', { error })
+    logger.error('uncaught exception', { error })
   })
 }
