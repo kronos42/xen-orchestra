@@ -26,7 +26,7 @@ const createTransport = config => {
   let { filter, transport } = config
   const level = resolve(config.level)
 
-  if (filter) {
+  if (filter !== undefined) {
     if (typeof filter === 'string') {
       const re = compileGlobPattern(filter)
       filter = log => re.test(log.namespace)
@@ -38,7 +38,7 @@ const createTransport = config => {
         return orig.apply(this, arguments)
       }
     }
-  } else if (level) {
+  } else if (level !== undefined) {
     const orig = transport
     transport = function (log) {
       if (log.level >= level) {
@@ -80,7 +80,7 @@ const serializeError = error => ({
 function Log (data, level, namespace, message, time) {
   if (data !== undefined) {
     const { error } = data
-    if (error && error instanceof Error) {
+    if (error instanceof Error) {
       data = { ...data, error: serializeError(error) }
     }
   }
@@ -109,7 +109,7 @@ prototype.wrap = function (message, fn) {
   return function () {
     try {
       const result = fn.apply(this, arguments)
-      const then = result && result.then
+      const then = result != null && result.then
       return typeof then === 'function'
         ? then.call(result, error => {
           logger.warn(message, { error })

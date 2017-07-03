@@ -31,7 +31,7 @@ export const compileGlobPattern = pattern => {
 
   const raw = [ '^' ]
 
-  if (no.length) {
+  if (no.length !== 0) {
     raw.push(
       '(?!',
       no.map(compileGlobPatternFragment).join('|'),
@@ -39,7 +39,7 @@ export const compileGlobPattern = pattern => {
     )
   }
 
-  if (yes.length) {
+  if (yes.length !== 0) {
     raw.push(
       '(?:',
       yes.map(compileGlobPatternFragment).join('|'),
